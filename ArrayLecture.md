@@ -17,10 +17,10 @@ CSS XXX - Section X.X - 7/31/23
 * Elements can be anything: String, int, double, arrarys, etc.
 * Uses a zero-index (like many programming languages)
 
-### **Code Examples**
+### **Code Examples - Scenario: Planning a road trip**
 
 * Ways to initialize an array
-
+#### How many seats does each traveler's car have?
 ```java
 //Separate lines, fill in later
 int[] seats;
@@ -33,6 +33,7 @@ seats[3] = 8;
 seats[4] = 4;
 seats[5] = 4;
 ```
+#### What is the estimated cost per day?
 ```java
 //One line, fill in later
 double[] cost = new double[3];
@@ -41,10 +42,10 @@ cost[0] = 231.67;
 cost[1] = 540.75;
 cost[2] = 399.10;
 ```
-
+#### Who do we have going on the trip so far?
 ```java
 //Initialized and filled in one line
-String[] travelers = new String[]{"Alice", "Bob", "Charlie"};
+String[] travelers = new String[]{"Alice", "Bob", "Carlos", "David", "Eve", "Frank"};
 ```
 
 * Access and modify

@@ -17,7 +17,7 @@ public class Main {
         cost[1] = 540.75;
         cost[2] = 399.10;
         
-        String[] travelers = new String[]{"Alice", "Bob", "Charlie"};
+        String[] travelers = new String[]{"Alice", "Bob", "Carlos", "David", "Eve", "Frank"};
         
         double total = 0;
         for(double c : cost) {

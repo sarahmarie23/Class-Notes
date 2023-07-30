@@ -45,7 +45,7 @@ cost[2] = 399.10;
 #### Who do we have going on the trip so far?
 ```java
 //Initialized and filled in one line
-String[] travelers = new String[]{"Alice", "Bob", "Carlos", "David", "Eve", "Frank"};
+String[] travelers = {"Alice", "Bob", "Carlos", "David", "Eve", "Frank"};
 ```
 
 * Access and modify

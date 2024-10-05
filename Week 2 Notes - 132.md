@@ -127,8 +127,8 @@ printf("$%.2f\n", 23.67368); // $ added to display a cost
 
 > 🔨 `srand(time(0))` used to seed rand with a starting value. time(0) is the current time
 >
-> 🔨 `rand() % 11` if I put 10, it would give a random number from 0-9, so if you want a range of 1 to something, add 1 to the number
+> 🔨 `rand() % 10 + 1` if I put 10, it would give a random number from 0-9, so if you want a range of 1 to something, add 1 to the statement
 >
 > 🔨 `start + (rand() % (end - start + 1))` custom range [start-end]
 
-🤔❓ Can you do a random double? What if you type cast it to int? 
+🤔❓ Can you do a random double? What if you type cast it to int?

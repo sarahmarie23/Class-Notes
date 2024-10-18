@@ -2,8 +2,10 @@
 
 CSSSKL 132 - 10/18/24
 
+## 🔑 Key Points 🔑
+
     1. While loops
-    2. Do-While loops
+    2. Do-while loops
     3. For loops and for-each loops
     4. Looping applications
 
@@ -11,7 +13,7 @@ CSSSKL 132 - 10/18/24
 
 * Today's scenario is that we would like to create a todo list app, where the user can enter a list of to do items and check them off when finished.
 
-* A while loop will execute until the condition is false. The app needs to take in a list of todo items, so let's make a while loop that lets them enter items until they tell the program to stop.
+* A while loop will execute until the condition is false. The app needs to take in a list of todo items, so let's make a while loop that asks the user to enter items until they tell the program to stop.
 
   > ✨ It's good practice to think of the functionality BEFORE you think of the code needed.
 
@@ -41,7 +43,7 @@ while (todo_item != "stop") {
 
 ### ☑️ Technique - Boolean flag
 
-* One useful technique is to use a boolean flag that you switch to the opposite value when a certain condition is met. This can be good for a game that is keeping track of whose turn it is `bool user_turn = true;` 
+* One useful technique is to use a boolean flag that you switch to the opposite value when a certain condition is met. This can be good for a game that is keeping track of whose turn it is `bool user_turn = true;`
 
 * Let's make a max amount of todo items and a boolean flag to mark that.
 
@@ -156,7 +158,7 @@ for (int i = 0; i < todo_list.size(); i += 2) {
 
 ### ☑️ Tip for preventing "array index out of bounds" errors
 
-* A common task is to go through an object and compare one element to the next. 
+* A common task is to go through an object and compare one element to the next.
 
 * 💻 Example: You have a vector with the temperatures for the week, and wanted to know, for each day to the next, did the temperature increase, decrease, or stay the same?
 

@@ -1,155 +1,248 @@
-# Week 6 Lab
+# Week 5 Lab
 
-CSSSKL 132 - 11/1/24
+CSSSKL 132 - 10/25/24
 
 ## 🔑 Key Points 🔑
 
-	1. Utilizing functions
-	2. Pass by value vs pass by reference
-	3. Functions that return values
-	4. Separating code into a header file and main.cpp file
-    
-## 📦 Moving code into functions
+    1. Arrays and their functions
+    2. Vectors and their functions
+    3. 2D arrays and vectors
 
-* Let's look back to the in-class code from week 4. It was about loops and we made a user-generated todo list.
+## 🌟 Array vs vector? - Make a table to compare them
 
-* Consider what blocks of code would be good in a function.
+✅ Arrays and Vectors are both data structures.
 
-> ❓🤔 How do you know if you should make a function?
+✅ They both hold elements of the same type.
+
+✅ They both are accessible by index.
+
+✅ Vectors are **dynamic**. They can grow and shrink.
+
+✅ You don't need to declare the size when you initialize Vectors.
+
+✅ Vectors have their own set of methods.
+
+✅ Add your own facts!
+
+## 📦 Arrays: Declare, insert element, access element, looping, functions
+
+> ✨ A string can be represented as an array of chars, which is why you could access chars like `my_string[i]`.
 
 
 
-Start with the first problem (taking in user todo items)
+### 1D arrays
+
+_**Ways to initialize**_
+
+1. No elements - **Must declare a size!**
+
+    ```cpp
+    string schedule[4] = {};  
+    ```
+
+2. With all elements
+
+    ```cpp
+    string schedule[] = {"CSS 132", "Calc 1", "American history"}; 
+    ```
+
+3. With some elements
+
+    ```cpp
+    string schedule[4] = {"CSS 132"}; 
+    ```
+
+> ✨ If you don't add a size, it will take the size of the number of elements!
+
+_**Insert element**_
+
+* Access it at an index `schedule[2] = "Physics";`
+
+> ✨ If there is already an element there, it will be overridden.
+
+> 🤔❓ What happens if I did `schedule[5] = "Physics";`?
+
+_**Access element**_
+
+> `string my_class = schedule[2];`
+
+### Looping through an array
+
+* For loop - How do you get the size?
+
+> ✔️ To get the size: ```sizeof(array_name);``` but this is the size in **bytes**. To get the quantity, divide by the size of the first element.
 
 ```cpp
-void getTodoItem(vector<string> todo_list) {
-  bool theres_room_left = true;
-	int max_items = 4;
-	int count = 0;
+cout << "size of schedule: " << sizeof(schedule) << endl; // returns 96
+int num_classes = sizeof(schedule) / sizeof(schedule[0]); // returns 3 
 
-	cout << "What is your todo item #" << count + 1 << "? Type stop to finish" << endl;
-	string todo_item;
-	getline(cin, todo_item);
-	cin.clear();
-
-	while (theres_room_left && todo_item != "stop") { 
-		count++;
-		todo_list.push_back(todo_item);
-		cout << "What is your todo item #" << count + 1 << "? Type stop to finish" << endl;
-		getline(cin, todo_item);
-		cin.clear();
-
-    theres_room_left = (count == max_items) ? false : true;
-	}
+for (int i = 0; i < num_classes; i++) {
+  printf("Class %i: %s\n", i, schedule[i].c_str());
 }
 ```
 
-* I told you that the function needed to be placed above the main function. But there's a better way to do that!
+> ✨ To `printf()` a string, add `.c_str()` to the end of the string variable.
 
-> 📝 Add a **function declaration**. This way you can put the **function definition** (block of code) after `main`.
-
-### Problem: Nothing went into the vector. How do you suppose we fix that?
-
-## 📩 Pass by value vs pass by reference
-
-* This code uses ***pass by value*** meaning we just passed the value of the vector, a copy, into the function. When a value was added, it was added to the copy that is *only reachable from within the function*.
-
-* Solution: You might think, "What if I just return a vector to main, that way it has all the information?" Sure, you could do that. But that wastes memory and will slow things down.
-
-* The real solution: Pass a *reference* of the vector to the function. Any changes made to the vector in the function will be made on the original vector. There's only one original vector in play here.
-
-* A reference is the ***address in memory where the element is stored*** so you can directly access and modify the element.
-
-> ✨ This concept is tricky for many students and it's going to get a bit more challenging! Make sure you understand this concept this week.
-
-> ✔️ **Tip:** if you can explain pass by value and pass by reference to a friend, that's a good way you know you understand. Even better: explain it to your friend who *doesn't* know programming, or even a child! That means you *really* know.
-
-> 📝 Fix the function header so that it passes in a reference to a vector.
-
-> 📝 Also update the function declaration.
-
-### ✔️ Now complete the rest of the functions.
-
-## 🚚 Functions that return values
-
-* On lab 1, we went over functions that were void (didn't return anything). It would be helpful if we could use functions that do return something. Maybe they calculate a value, or generate a string from user input.
-
-> 📝 Make a function that returns the most recently added item to the list.
+* For each loop
 
 ```cpp
-string getLastItem(vector<string>& todo_list) {
-  // Returns the last element of the list
-  if (todo_list.empty()) {
-    return "The list is empty!";
+for (string c : schedule) {
+  cout << c << endl;
+}
+```
+> ✨ Fun fact: You wouldn't be able to use `string class` (which is more clear!) because `class` is a reserved word in C++.
+
+_**Array functions**_
+
+### `sort()`
+
+`sort(arr, arr + arr_size);`
+
+> ✨Don't forget to import the `<algorithm>` library!
+
+> ✔️ **Note on sorting strings:** They will be sorted by ASCII value. Capital letters are "less" than lowercase.
+
+### `swap()` - Simply indicate which to swap
+
+`swap(arr[0], arr[1]);`
+
+> 🤔❓ Can you swap an entire array? How about in a 2D array, swap one element from one array into another array? Can you swap elements in two separate arrays?
+
+### 2D arrays
+
+* Must assign the size of the inner arrays!
+* Leaving the first [] empty is optional. It will figure out the size (3 in this case).
+
+```cpp
+string year[][3] = {
+  {"CSS 132", "Calc 1", "American history"},
+  {"CSS 133", "Calc 2", "Writing"},
+  {"Chemistry", "Econ", "Music"}
+};
+```
+
+* Getting the size works the same as getting the size for a 1D array
+
+```cpp
+int num_semesters = sizeof(year) / sizeof(year[0]);
+```
+
+> ✨ We want to know how many elements are in the array. This 2D array has arrays for its elements, so how many inner arrays are there?
+
+* Looping goes **Row by Row** on the outer loop and **Column by Column** on the inner looop!
+
+```cpp
+for (int sem = 0; sem < num_semesters; sem++) {
+  for (int c = 0; c < num_classes; c++) {
+    cout << year[sem][c] << " ";
+  }
+  cout << endl;
+}
+```
+
+> ✨ You can use i for the outer loop and j for the inner loop, but it can be helpful to use variables that represent your use case.
+
+## ↗️ Vectors
+
+* Like an array, but it is resizable
+
+_**Ways to initialize**_
+
+1. No elements
+
+```cpp
+vector<string> v_classes;
+```
+
+2. With elements
+
+```cpp
+vector<string> v_classes = {"CSS 132", "Calc 1", "American history"};
+```
+
+_**Insert element**_
+
+1. Insert at the end
+
+```cpp
+v_classes.push_back("Art");
+```
+
+2. Insert somewhere else
+
+```cpp
+v_classes[0] = "Art"; // Just like an array
+v_classes.at(0) = "Art";
+```
+
+_**Access element**_
+
+```cpp
+string first_class = v_classes[0]; // Just like an array
+string next_class = v_classes.at(1);
+```
+
+### Looping through a vector
+
+* Using a for each loop: Same as for an array
+
+```c++
+for (string s : v_classes) {
+  cout << s << " " << endl;
+}
+```
+
+* Using a for loop: You can use the size() function to easily get the size
+
+```cpp
+for (int i = 0; i < v_classes.size(); i++) {
+  printf("Class %i: %s\n", i, v_classes[i].c_str());
+}
+```
+
+### 2D Vector looping
+
+> ✨ Note the `vector<vector<string>>` data type
+* The rest is the same as the array
+
+* For loop
+
+```cpp
+vector<vector<string>> v_year = {
+  {"CSS 132", "Calc 1", "American history"},
+  {"CSS 133", "Calc 2", "Writing"},
+  {"Chemistry", "Econ", "Music"}
+};
+
+for (int sem = 0; sem < v_year.size(); sem++) {
+  for (int c = 0; c < v_year[0].size(); c++) {
+    cout << v_year[sem][c] << " ";
+  }
+  cout << endl;
+}
+```
+* And we were able to use the `size()` function
+
+* For each loop
+
+```cpp
+for (vector<string> sem : v_year) {
+  for (string s : sem) {
+    cout << s << " " << endl;
   }
   
-  return todo_list.back();
+  cout << endl;
 }
 ```
+> ✨ There is an easier way: use `auto` instead of `vector<string>` and `string` in the for each loop expressions.
 
-> ✨ Make sure you test it for both full and empty lists!
+### Vector functions
 
-## 🗂️ Working with multiple files
-
-* Now that we've separated the code into functions, we can organize it even further.
-
-### Start with the Header file
-
-* A file that contains
-
-1. Guards - so the contents of the header file doesn't get accidentally reused and cause the "multiple definition" error
-
- * Example: There are multiple files in the project that `#include` that header file
-
-> ✨ Include these three guards
-
-```c++
-#ifndef HEADER_H // All caps, use _, replace HEADER with the name of your header
-#define HEADER_H
-
-// function declarations
-
-#endif
-```
-
-2. Your function declarations
-
-> If you wrote them above main, copy paste them over
-
-### Moving on to main.cpp
-
-```c++
-#include "header.h"
-#include <iostream>
-#include <vector>
-
-using namespace std;
-
-int main() {
-  
-	vector<string> todo_list;
-
-	getTodoItem(todo_list);
-	printSingleOrDouble();
-	forLoopPrint(todo_list);
-	printListBackwards(todo_list);
-	string last = getLastItem(todo_list);
-
-	cout << "the last item is: " << last;
-
-	return 0;
-}
-```
-
-## 🏔️ Bonus: Constants
-
-* Your code could have elements that are declared once and never changed. In fact, they probably aren't ever supposed to change. An example of that would be `int max_items = 6;`. We can declare it as a **constant** to ensure it can never be changed during the life of the program.
-
-```c++
-const int MAX_ITEMS = 6;
-```
-
-> ✨ It is conventional to use this style of all caps and underscores.
-
-* I'm leaving it in `functions.cpp` but if you need it to be used in other files you could put it in the header.
-
+* `at()` - Get the element at that index
+* `front()` - Get the first element
+* `back()` - Get the last element
+* `push_back()` - Add element to the end
+* `pop_back()` - Remove element from the end
+* `size()` - Get the size of the vector
+* `empty()` - Returns true if a vector is empty, false otherwise
+* `vector1.swap(vector2)` - Swap the contents of two vectors

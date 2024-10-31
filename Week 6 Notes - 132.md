@@ -128,15 +128,14 @@ using namespace std;
 int main() {
   
 	vector<string> todo_list;
-
+	
 	getTodoItem(todo_list);
-	printSingleOrDouble();
 	forLoopPrint(todo_list);
 	printListBackwards(todo_list);
 	string last = getLastItem(todo_list);
-
+	
 	cout << "the last item is: " << last;
-
+	
 	return 0;
 }
 ```

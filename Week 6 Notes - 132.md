@@ -58,7 +58,7 @@ void getTodoItem(vector<string> todo_list) {
 
 * The real solution: Pass a *reference* of the vector to the function. Any changes made to the vector in the function will be made on the original vector. There's only one original vector in play here.
 
-* A reference is the ***address in memory where the element is stored*** so you can directly access and modify the element.
+* A reference provides **direct access to the memory location where the element is stored**, allowing you to access and modify the original element directly..
 
 > ✨ This concept is tricky for many students and it's going to get a bit more challenging! Make sure you understand this concept this week.
 

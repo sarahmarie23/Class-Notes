@@ -8,7 +8,7 @@ CSSSKL 132 - 11/8/24
     2. Using cstrings
     3. File I/O
 
-## 🏠 Structs - when you need to store different data
+## 🏠 Structs - when you need to store different types of data
 
 * To store one number, you use an int. To store multiple numbers, you could use a vector. But what if you wanted a way to store an int, string, and a boolean? We can use a struct for that.
 
@@ -121,7 +121,7 @@ Order customerOrder;
 * Reading in user input into a char array is a little different from a string. Our old `getline()` function won't work for reading into a `cstring`.
 
 ```cpp
-string input_string = ;
+string input_string = "";
 getline(cin, input_string);
 
 char input_cstring[50];
@@ -135,7 +135,7 @@ cout << "What is your entree order? ";
 cin.getline(customerOrder.entree, 50);
 ```
 
-## 📩 File Output
+## 📩 File Output #include <fstream>
 
 * We need to send the information from the customer's order out to a `.txt` file. But there are some steps that we need to make sure we complete.
 
@@ -173,7 +173,7 @@ receipt.close();
 
 > 🤔❓ Why is it so important to close the stream?
 
-## Back to structs for a moment
+## ↩️ Back to structs for a moment
 
 * We made a struct, declares an instance of a struct, and set values in that Order object. But how can we use it?
 

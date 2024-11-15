@@ -85,13 +85,13 @@ int main() {
 ```cpp
 class Inventory {
   public:
-  	void addArmorItem();
-		void addInventoryItem();
-		void printInventory();
+    void addArmorItem();
+    void addInventoryItem();
+    void printInventory();
   
   private:
-  	string armor[4];
-  	vector<string> items;
+    string armor[4];
+    vector<string> items;
 };
 ```
 

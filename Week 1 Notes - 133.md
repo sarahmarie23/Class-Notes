@@ -67,7 +67,7 @@ int main() {
 	return 0;
 }
 ```
-![solution](/20250109_222746.jpg)
+<img src="memory_mapping.jpg" width="400">
 
 ## 📏 Dynamic Memory - Resizing Arrays
 

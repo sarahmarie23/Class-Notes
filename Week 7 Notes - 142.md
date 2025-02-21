@@ -1,16 +1,16 @@
 # Week 7 Lab
 
-CSSSKL 142 - 5/10/24
+CSSSKL 142 - 2/21/25
 
 ## 🔑 Key Points 🔑
 
     1. String methods 
     2. Array introduction
-    3. Debugging
+    3. StringBuilder
 
 ### 🚀 Today's goal
 
-> **To become familiar some string methods and apply them to the hangman game we've been working on.**
+> **To become familiar some string methods and apply them to the Wordle game we've been working on.**
 
 ## 🛠️ String methods
 
@@ -86,172 +86,95 @@ String myString = "   Hello World   ";
 myString = myString.trim(); // Returns myString = "Hello World"
 ```
 
-## 🧩 Hangman Methods
+## 🧩 checkGuess() Method improvements
 
-### Introducing the `char[] status` array
+### Introducing StringBuilder
 
-* I needed a way to keep track of the status of the guessed letters, so I could compare it to the secret word. An array made the most sense for this. Let's initialize this array and update it when the letters are correctly guessed. 
+* We learned that strings are immutable. When we use += to add onto a string, we're actually creating a new string.
 
-📝 Sketch a visalization of an array and understand how to index it
-
-❓ What are the similarities and differences between a char array and a string?
+* **StringBuilder** is a class we can utilize for when we want to add on to a string. Let's use that for building up the result in `checkGuess()`.
 
 ```java
-char[] status = new char[secretWord.length()];
+StringBuilder result = new StringBuilder("");
+
+// don't forget to return a string!
+return result.toString();
 ```
 
-* This is one way to initialize an array, we will go more in depth next week.
+### Introducing Arrays
 
-* I thought, if I could just fill it with _ and update it to the guessed letter, that would make it easy to use for checking.
+* Our algorithm doesn't work when there are duplicate letters in a word. As a test, I guessed the word "aaaaa" when the word was "apple". The result was "a****" meaning it got the first 'a' correct but it said the rest of my a's were in the wrong spot.
 
-* There is a convenient method for filling an array with something:
+* We want to make sure that my guess of "aaaaa" only counts one a.
 
-```java
-Arrays.fill(status, '_');
-```
+⭐ We can do this with an array. Recall that an array holds a fixed amount of a specific element, and can be modified.
 
-### ✔️ **checkIfWordGuessed Method**
-
-* We use a while loop to continuously check if the word is guessed. Let's compare the secret word to the status, and see if they have the same characters.
-
-### 🛠️ String Method #1: `String.equals()`
-
-* You can't compare strings in Java with ==, so we use `String.equals()`
-
-* `status` is an array, can we convert it to a string?
-
-### 🛠️ String Method #2: `String.valueOf()`
+🛠️ One trick I use when I need to keep counts of letters is to use an int array of size 26, so that index 0 = A, index 1 = B, and so on. Just increase the index by 1 when you encounter that letter.
 
 ```java
-char[] arr = {'a', 'b', 'c'};
-String arrToStr = String.valueOf(arr);
-```
+int[] letterCounts = new int[26];
 
-Using them together
-
-```java
-public static boolean checkIfWordGuessed(String secretWord, char[] status) {
-    if (secretWord.equals(String.valueOf(status))) {
-        return true;
-    }
-    return false;
+// Count the letters in the secretWord
+for (char c : secretWord.toCharArray()) {
+    letterCounts[c - 'a']++;
 }
 ```
 
-### ✔️ **checkLetterGuess Method**
-
-* I mentioned earlier the array would be easy to update as the user made their guesses. Let's work a method that takes the guesses and updates the status. I'll initialize a boolean in main so that we can tell the user if their guess was correct or not
+⚠️❓ Do you see a potential problem here? What happens if the user writes capital letters? Let's fix our code so that we only need to deal with lowercase letters.
 
 ```java
-boolean isGuessCorrect = checkLetterGuess(guess, secretWord, status);
+// Add this in where we take in user input
+guess = input.nextLine().toLowerCase();
 ```
 
-* Make a for loop to compare each character of the secretWord to the guess. At the same time, we can update status if we have a match.
+⭐ You can 'subtract' letters because chars can also be represented as numbers. Just like the boolean 'true' can be represented as 1, the letter 'a' can be represented as 97.
 
-### 🛠️ String Method #3: `String.charAt()`
+* We need a way to first check if any letters are in the correct spot, and decrease the counts for those letters. Then on the next pass, we can check if the letter exists in the word (we made an array to help us out with that!) and we can check if that spot was already correctly found.
 
-* Works nicely when you want to check character by character with a for loop
+⭐ We'll use a second array, boolean this time.
 
 ```java
-public static boolean checkLetterGuess(char guess, String secretWord, char[] status) {
-    // see if the letter is in the secret word
-    int count = 0;
+boolean[] correctPositions = new boolean[secretWord.length()];
+```
+
+* Complete `checkGuess()` method
+
+```java
+public static String checkGuess(String guess, String secretWord) {
+    StringBuilder result = new StringBuilder("");
+    int[] letterCounts = new int[26]; // Counts for each letter
+    boolean[] correctPositions = new boolean[secretWord.length()]; // Tracks correctly placed letters
+    
+    // Count the letters in the secretWord
+    for (char c : secretWord.toCharArray()) {
+        letterCounts[c - 'a']++;
+    }
+    
+    // First check for any letters in the correct position. Reduce those counts
     for (int i = 0; i < secretWord.length(); i++) {
-        if (guess == secretWord.charAt(i)) {
-            status[i] = guess;
-            count++;
+        char guessedChar = guess.charAt(i);
+        char correctChar = secretWord.charAt(i);
+
+        if (guessedChar == correctChar) { // its correct
+            result.append(guessedChar); // Add the letter to the result
+            correctPositions[i] = true; // Mark the position as correct
+            letterCounts[guessedChar - 'a']--;
+        } else {
+            result.append("_"); // Just a placeholder
         }
     }
-    if (count != 0) { 
-        return true;
+    
+    // Then go through and take care of the letters in the wrong position
+    for (int i = 0; i < secretWord.length(); i++) {
+        char guessedChar = guess.charAt(i);
+        // If the current position is false (incorrect position) AND we have that letter available in letterCounts
+        if (!correctPositions[i] && letterCounts[guessedChar - 'a'] > 0) {// correct letter, wrong spot
+            result.setCharAt(i, '*');
+            letterCounts[guessedChar - 'a']--;
+        } 
     }
-    return false;
+
+    return result.toString();
 }
 ```
 
-❓ Looking a bit ahead: I passed in the array, but I didn't return it. Will it keep the changes we made? Why or why not? (spoiler alert: we didn't pass the actual array, we just passed a reference to it!)
-
-### ✔️ **displayStatus Method**
-
-* We need some output so we know what the guesses look like so far. We could use a for loop...OR we could use a for-each loop. You can easily iterate through an array with a for-each loop.
-
-```java
-public static void displayStatus(char[] status) {
-    // print with a space between letters for legibility
-    for (char c : status) {
-        System.out.print(c + " ");
-    }
-    System.out.println();
-}
-```
-
-⚠️ Remember that you can't make changes to the array when going through it with a for each loop. Also, you need to start at the beginning of the array.
-
-### Test it out and see what happens
-
-* Test a winning and losing condition. It works for losing but not winning. Work it out together. Revisit the logic in the while loop. We need to update this to make it correct.
-
-```java
-while(!checkIfWordGuessed(secretWord, status) && mistakesMade < 6)
-```
-
-## 🧩 Java String problem techniques
-
-* Having the tools is great, but it would be nice to know some techniques that will improve your problem-solving skills
-
-### 🌟 Going through each character of a string
-
-* Using a for loop and `charAt()`
-
-```java
-String myString = "Hello World";
-
-for (int i = 0; i < myString.length(); i++) {
-    System.out.println(myString.charAt(i)); // Iterates over each character
-}
-```
-
-* Using a for each loop and `toCharArray()`
-
-```java
-String myString = "Hello World";
-
-for(char c : myString.toCharArray()) {
-    System.out.println(c); // Iterates over each character
-}
-```
-
-### 🪓 Splitting a string into an array
-
-* Our class hasn't done arrays yet, but we will next week
-* You can split by any sequence, doesn't have to be a single space
-
-```java
-String snacks  = "juice, ice cream, chips, bananas";
-String[] shopping = snacks.split(", ");
-// Returns an array of ["juice", "ice cream", "chips", "bananas"]
-```
-
->* 👉 Notice how if I split by ", " instead of " " it will keep 'ice cream' together as one string.
-
-### 🧱 StringBuilder
-
-* Instead of concatenating strings together with '+', use a `StringBuilder` as a convenient way to keep adding on to a string
-* 🌟`StringBuilder` is more efficient than concatenating strings because it doesn't initialize a new string every time a string is added on.
-
-```java
-StringBuilder fullName = new StringBuilder();
-String first = "Holly";
-String middle = "the";
-String last = "Husky";
-
-fullName.append(first);
-fullName.append(" ").append(middle);
-fullName.append(" ").append(last);
-fullName.append(" is the UW mascot");
-
-System.out.println(fullName.toString());
-```
-
->* 👉 Notice that you need to convert it to a string to be able to print it out.
->* 👉 Notice that you can chain multiple methods together!

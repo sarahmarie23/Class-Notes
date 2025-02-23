@@ -74,10 +74,51 @@ void selectionSort(int arr[], int n) {
 }
 ```
 
-## Using the Call Stack with Quicksort
+## Using the Call Stack with Quicksort - using OnlineGDB
 
 * It can be helpful to visualize the call stack. This will help you with debugging and see what's going on with your code.
 
 * Use a breakpoint (in VS Code, it's a small red dot placed by clicking to the left of the line number) in the following locations
 
-> 
+✅  When we reach the base case
+```cpp
+  if (low >= high) {
+    return;
+  }
+```
+✅ Calling partition()
+```cpp
+partitionIndex = partition(numbers, low, high);
+```
+✅ When the pivot value is selected
+```cpp
+int pivot = numbers[midpoint];
+```
+✅ When the values are being swapped
+```cpp
+swap(numbers[leftPtr], numbers[rightPtr]);
+```
+✅ When partition() finishes and we return the right ptr
+```cpp
+return rightPtr;
+```
+
+✨ The program will stop whereever you have a breakpoint. Pick important variables, function calls, return statement, anything you want to keep an eye out for.
+
+* Check out the call stack. You can see each function as it is pushed to the stack and popped off.
+
+* **Local Variables** - Want to save yourself the trouble of cout-ing variables all the time? Just see your variables here!
+
+* Breakpoints and Watchpoints - Check and uncheck which breakpoints you wish to watch.
+
+### Debugger commands
+
+* **Continue** - Keep going to the next breakpoint. The program will stop there.
+
+* **Step into** - Go line by line through the function. Helpful if you want to watch how variables change.
+
+* **Step over** - Go line by line but don't go inside the function call
+
+* **Step out** - If you stepped into a function and want to return back to the calling function.
+
+✨ Play around with it and see if you can follow along on the call stack with the function calls as the push and pop off.

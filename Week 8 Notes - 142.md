@@ -1,10 +1,10 @@
 # Week 8 Lab
 
-CSSSKL 142 - 5/17/24
+CSSSKL 142 - 2/128/25
 
 ## 🔑 Key Points 🔑
 
-    1. Array from a file - Hangman game
+    1. Read a file into an array - Wordle
     2. 2D Arrays
     3. Ragged/Jagged arrays
     4. Array fun facts
@@ -31,28 +31,31 @@ CSSSKL 142 - 5/17/24
 
 ✅ ArrayLists hold objects, while arrays can hold objects or primitives
 
-## 🎲 Arrays - finishing up Hangman
+## 🎲 Arrays - finishing up Wordle
 
-* Our readFile method from earlier
+* Here's our `readFileScanner` method from week 6:
 
 ```java
-public static void readFile(File fileName) {
-    try {
-        Scanner input = new Scanner(fileName);    
-        while (input.hasNextLine()) {
-            String line = input.nextLine();
+    public static void readFileScanner(File fileName) {
+        Scanner input;
+        try {
+            input = new Scanner(fileName);
+            while (input.hasNextLine()) {
+                String line = input.nextLine();
+                System.out.println(line);
+            }
+            input.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
         }
-    } catch (FileNotFoundException e) {
-        System.out.println("File not found!");
     }
-}
 ```
 
 * Let's refactor it so that it takes the file and puts the words into an array.
 
-* Change the return type to `String[]` and we can use it for the game.
+* Change the return type to `String[]` and we can use it for the game. Declare an array in the method.
 
-❓ Problem: We need to declare an array with a size, but say we don't know how many words there are. What are our options?
+❓ Problem: We need to declare an array with a size, but I don't know how many words there are. What are our options?
 
 >✔️ Go through the file once and count the lines
 >
@@ -60,46 +63,113 @@ public static void readFile(File fileName) {
 >
 >✔️ Set a size. If there are more lines than the set size, either exclude them from the array, or make a new array.
 
-* For the purposes of the lecture, I'll be setting a length of 25.
+* Let's try the first method.
 
-* Use `ArrayIndexOutOfBoundsException` in case there are too many words!
-
-* In the main method, add in
+* In the main method, add in the array to save it to:
 
 ```java
-String[] wordBank = readFile(wordList);
+String[] wordBank = readFileScanner(myFile);
 ```
 
-* Completed `readFile` method
+* Completed `readFileScanner` method
 
 ```java
-public static String[] readFile(File fileName) {
-    int fileLength = 25; // Set the length
-    String[] wordArray = new String[fileLength]; // Declare
+public static String[] readFileScanner(File fileName) {
+        // Declare the array
+        // Get the number of words on the list
+        int wordCount = getWordCount(fileName);
+        String[] words = new String[wordCount];
 
-    int index = 0; // Keep track of the index
-    try {
-        Scanner input = new Scanner(fileName);    
-        while (input.hasNextLine()) {
-            String line = input.nextLine();
-            wordArray[index] = line.toLowerCase(); // Add to the array
-            index++; // Increment index
+        // Return an empty array if getWordCount returns 0
+        if (wordCount == 0) {
+            return words;
         }
-    } catch (FileNotFoundException e) {
-        System.out.println("File not found!");
-    } catch (ArrayIndexOutOfBoundsException e) { // Don't forget!
-        System.out.println("Out of bounds!");
-    }
+        
+        // Now continue filling the array with the words
+        // Try this first and fail:
+        //Scanner input = new Scanner(fileName);        
+        Scanner input;
+        String currString;
+        
+        try {
+            input = new Scanner(fileName);
+            int index = 0;
 
-    return wordArray;
+            while (input.hasNextLine()) {
+                currString = input.nextLine();
+                words[index] = input.nextLine();
+                index++;
+            }
+            input.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found");
+        }
+        return words;
+    }
 }
 ```
+
+* Write a helper function to keep the code organized and uncluttered.
+
+```cpp
+public static int getWordCount(File fileName) {
+    int wordCount = 0;
+    Scanner input;
+    String currString;
+
+    try {
+        input = new Scanner(fileName);
+        while (input.hasNext()) {
+            currString = input.next();
+            wordCount++;
+        }    
+        input.close();
+    } catch (FileNotFoundException e) {
+        System.out.println("File not found! Exiting game.");
+    } 
+    System.out.println("There were " + wordCount + " words in the file!");
+    return wordCount;
+}
+```    
 
 ### And now we can use it to get a random word
 
 ```java
+Random rand = new Random();
+String secretWord = wordBank[rand.nextInt(3264)];
+```
+
+* You could have also used an `ArrayList`
+
+```java
+public static ArrayList<String> readBufferedReaderAndArrayList(String file) {
+    ArrayList<String> myList = new ArrayList<>();
+
+    try {
+        FileReader reader = new FileReader(file);
+        BufferedReader br = new BufferedReader(reader);
+        
+        String line = br.readLine();
+        while (line != null) {
+            myList.add(line);
+            line = br.readLine();
+        }
+        br.close();
+    } catch (IOException e) {
+        System.out.println("There was an IOException");
+    }
+
+    return myList;
+}
+```
+
+```java
 // Get the secret word simply without using a method
-String secretWord = wordBank[random.nextInt(25)]; 
+String secretWord = wordBank[random.nextInt(3264)]; 
+```
+
+```java
+String secretWord = wordsAL.get(rand.nextInt(3264));
 ```
 
 ## 🏠 2D arrays
